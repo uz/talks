@@ -1,47 +1,74 @@
-\documentclass[aspectratio=169,hideallsubsections]{ctexbeamer}
+\documentclass[aspectratio=169,draft]{ctexbeamer}
+%%\documentclass[aspectratio=169]{ctexbeamer}
 \usetheme{Pittsburgh}
-\title{nginx upload module}
+%%\usetheme{Berlin}
+
+\title{nginx upload module介绍}
 \author{容忠健}
 \institute{@Bigo}
-
-%%\useoutertheme[hideothersubsections,left]{sidebar}
-
+\date{\today}
 \logo{\includegraphics[width=2cm]{nginx.png}}
 
 \begin{document}
 
 \frame[plain]{\titlepage}
 
-\begin{frame}{内容}
-  \tableofcontents[hideallsubsections]
+%% \begin{frame}{内容}
+%%   \tableofcontents[hideallsubsections]
+%% \end{frame}
+
+\section*{概要}
+\begin{frame}
+  \tableofcontents
 \end{frame}
 
+%% 讲10分钟
+\section{nginx简介}
+\subsection*{原理}
+\begin{frame}
+  \frametitle{为什么说nginx比apache性能更好？}
+  \framesubtitle{nginx采用了与apache不同的工作模型}
+  \begin{itemize}
+  \item<2-> apache为每个http request创建一个线程去处理，整个处理流程是同步的
+  \item<3->nginx启用一个master进程和多个worker进程，一般有几核就启几个worker进程，整个处理流程是异步的，通过事件（网络/超时）触发，核心是一个epoll事件轮询
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{nginx是如何支持第三方模块？}
+  \framesubtitle{定义阶段，设定好接口}
+\end{frame}
+\begin{frame}
+  \frametitle{编写nginx模块要注意什么？}
+\end{frame}
+%% 讲30分钟
 \section{nginx upload module简介}
 \subsection*{概念}
-\begin{frame}[fragile]
-  \frametitle{nginx upload module简介}{概念}
-  \pause
-  nginx upload module是nginx的一个第三方http模块。它的作用为以下几点：
-\begin{itemize}
-  \pause
-\item 拆解出multipart/form-data方式的post请求中的文件内容，写到本地
-  \pause
-\item 实现了一个断点续传的协议
-\end{itemize}
-\end{frame}
-
 \subsection*{用法}
+\subsection*{原理}
+
+%% \begin{frame}[fragile]
+%%   \frametitle{nginx upload module简介}{概念}
+%%   \pause
+%%   nginx upload module是nginx的一个第三方http模块。它的作用为以下几点：
+%% \begin{itemize}
+%%   \pause
+%% \item 拆解出multipart/form-data方式的post请求中的文件内容，写到本地
+%%   \pause
+%% \item 实现了一个断点续传的协议
+%% \end{itemize}
+%% \end{frame}
+
+%% \begin{frame}
+%%   \frametitle{nginx upload module简介}{使用}
+%% \end{frame}
+
+%% \begin{frame}{nginx简介}
+%% \end{frame}
+
+%% \begin{frame}{nginx upload module原理}
+%% \end{frame}
+
 \begin{frame}
-  \frametitle{nginx upload module简介}{使用}
-\end{frame}
-
-
-\section{nginx简介}
-\begin{frame}{nginx简介}
-\end{frame}
-
-\section{nginx upload module原理}
-\begin{frame}{nginx upload module原理}
 \end{frame}
 
 \end{document}

@@ -1,2 +1,2 @@
 all:
-	xelatex nginx-upload-module
+	xelatex main.tex
