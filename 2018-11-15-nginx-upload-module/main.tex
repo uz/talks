@@ -1,0 +1,48 @@
+\documentclass[aspectratio=169,hideallsubsections]{ctexbeamer}
+\usetheme{Pittsburgh}
+\title{nginx upload module}
+\author{容忠健}
+\institute{@Bigo}
+
+%%\useoutertheme[hideothersubsections,left]{sidebar}
+
+\logo{\includegraphics[width=2cm]{nginx.png}}
+
+\begin{document}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}{内容}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{nginx upload module简介}
+\subsection*{概念}
+\begin{frame}[fragile]
+  \frametitle{nginx upload module简介}{概念}
+  \pause
+  nginx upload module是nginx的一个第三方http模块。它的作用为以下几点：
+\begin{itemize}
+  \pause
+\item 拆解出multipart/form-data方式的post请求中的文件内容，写到本地
+  \pause
+\item 实现了一个断点续传的协议
+\end{itemize}
+\end{frame}
+
+\subsection*{用法}
+\begin{frame}
+  \frametitle{nginx upload module简介}{使用}
+\end{frame}
+
+
+\section{nginx简介}
+\begin{frame}{nginx简介}
+\end{frame}
+
+\section{nginx upload module原理}
+\begin{frame}{nginx upload module原理}
+\end{frame}
+
+\end{document}
+
