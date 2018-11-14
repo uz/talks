@@ -1,7 +1,37 @@
-\documentclass[aspectratio=169,draft]{ctexbeamer}
-%%\documentclass[aspectratio=169]{ctexbeamer}
+\documentclass[aspectratio=169]{ctexbeamer}
+\usepackage{listings}
 \usetheme{Pittsburgh}
-%%\usetheme{Berlin}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\fontsize{3.8}{3.8}\selectfont\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\AtBeginSubsection[]{
+  \begin{frame}<beamer>
+    \tableofcontents[currentsection, currentsubsection]
+  \end{frame}
+}
 
 \title{nginx upload module介绍}
 \author{容忠健}
@@ -13,63 +43,63 @@
 
 \frame[plain]{\titlepage}
 
-%% \begin{frame}{内容}
-%%   \tableofcontents[hideallsubsections]
-%% \end{frame}
-
 \section*{概要}
 \begin{frame}
-  \tableofcontents
+  \tableofcontents[hideallsubsections]
 \end{frame}
 
-%% 讲10分钟
+%% 10 min
 \section{nginx简介}
-\subsection*{原理}
-\begin{frame}
-  \frametitle{为什么说nginx比apache性能更好？}
-  \framesubtitle{nginx采用了与apache不同的工作模型}
+
+\subsection{为什么nginx比apache性能更好？}
+\begin{frame}{\subsecname}{nginx采用了与apache不同的工作模型}
   \begin{itemize}
   \item<2-> apache为每个http request创建一个线程去处理，整个处理流程是同步的
-  \item<3->nginx启用一个master进程和多个worker进程，一般有几核就启几个worker进程，整个处理流程是异步的，通过事件（网络/超时）触发，核心是一个epoll事件轮询
+  \item<3-> nginx启用一个master进程和多个worker进程，一般有几核就启几个worker进程，整个处理流程是异步的，通过事件（网络/超时）触发，核心是一个epoll事件轮询
   \end{itemize}
 \end{frame}
-\begin{frame}
-  \frametitle{nginx是如何支持第三方模块？}
-  \framesubtitle{定义阶段，设定好接口}
+
+\subsection{nginx框架是怎样的？}
+
+\begin{frame}{\subsecname}{nginx框架}
+  \lstinputlisting[style=customc,language=C,linerange={727-778}]{nginx/src/os/unix/ngx_process_cycle.c}
 \end{frame}
-\begin{frame}
-  \frametitle{编写nginx模块要注意什么？}
+
+\begin{frame}{\subsecname}{nginx处理事件和定时器}
+  \lstinputlisting[style=customc,language=C,linerange={193-195, 242-260}]{nginx/src/event/ngx_event.c}
 \end{frame}
-%% 讲30分钟
+
+\begin{frame}{\subsecname}{nginx处理事件}
+  \lstinputlisting[style=customc,language=C,linerange={783-785, 799-806, 836-842, 883-884, 895-909, 927-937}]{nginx/src/event/modules/ngx_epoll_module.c}
+\end{frame}
+
+\begin{frame}{\subsecname}{nginx接受tcp连接 (初始化)}
+  \lstinputlisting[style=customc,language=C,linerange={607-609, 648-665, 773-775, 860-863, 895-899, 904-905}]{nginx/src/event/ngx_event.c}
+\end{frame}
+
+\begin{frame}{\subsecname}{nginx从接收tcp连接到开始处理请求}
+  \lstinputlisting[style=customc,language=C,linerange={17-19, 48-49, 55-55, 65-65, 139-139, 214-214, 308-308, 314-315}]{nginx/src/event/ngx_event_accept.c}
+  \lstinputlisting[style=customc,language=C,linerange={1696-1698, 1711-1711}]{nginx/src/http/ngx_http.c}
+  \lstinputlisting[style=customc,language=C,linerange={205-207, 322-324, 351-370}]{nginx/src/http/ngx_http_request.c}
+\end{frame}
+
+\begin{frame}{\subsecname}{nginx处理请求的一系列操作}
+  \lstinputlisting[style=customc,language=C,linerange={374-374, 937-937, 1217-1217, 1879-1879}]{nginx/src/http/ngx_http_request.c}
+  \lstinputlisting[style=customc,language=C,linerange={801-804, 841-842}]{nginx/src/http/ngx_http_core_module.c}
+\end{frame}
+
+\subsection{nginx如何支持第三方模块？}
+\begin{frame}{\subsecname}{定义阶段和接口}
+\end{frame}
+
+\subsection{编写nginx模块要注意什么？}
+\begin{frame}{\subsecname}
+\end{frame}
+
+%% 30 min
 \section{nginx upload module简介}
-\subsection*{概念}
-\subsection*{用法}
-\subsection*{原理}
-
-%% \begin{frame}[fragile]
-%%   \frametitle{nginx upload module简介}{概念}
-%%   \pause
-%%   nginx upload module是nginx的一个第三方http模块。它的作用为以下几点：
-%% \begin{itemize}
-%%   \pause
-%% \item 拆解出multipart/form-data方式的post请求中的文件内容，写到本地
-%%   \pause
-%% \item 实现了一个断点续传的协议
-%% \end{itemize}
-%% \end{frame}
-
-%% \begin{frame}
-%%   \frametitle{nginx upload module简介}{使用}
-%% \end{frame}
-
-%% \begin{frame}{nginx简介}
-%% \end{frame}
-
-%% \begin{frame}{nginx upload module原理}
-%% \end{frame}
-
-\begin{frame}
-\end{frame}
+\subsection{为什么我们需要这个模块？}
+\subsection{文件怎么落地？}
 
 \end{document}
 
