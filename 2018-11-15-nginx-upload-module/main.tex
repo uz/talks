@@ -31,7 +31,7 @@
   breaklines=true,
   frame=L,
   xleftmargin=\parindent,
-  basicstyle=\fontsize{3.8}{3.8}\selectfont\ttfamily,
+  basicstyle=\fontsize{5}{5}\selectfont\ttfamily,
 }
 
 %\lstset{escapechar=@,style=customc}
@@ -153,7 +153,41 @@
   \lstinputlisting[style=nginx]{nginx-upload.conf}
 \end{frame}
 
+\subsection{运行}
+
 \subsection{代码结构}
+\begin{frame}{\subsecname}
+  \lstinputlisting[style=customc,language=C,linerange={449-461}]{nginx-upload-module-master/ngx_http_upload_module.c}
+  \lstinputlisting[style=customc,language=C,linerange={2921-2923, 2944-2944}]{nginx-upload-module-master/ngx_http_upload_module.c}
+  \lstinputlisting[style=customc,language=C,linerange={796-798, 811-820, 877-877, 898-905, 920-922, 927-928}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+
+\begin{frame}{\subsecname}
+  \lstinputlisting[style=customc,basicstyle=\fontsize{4.5}{4.5}\selectfont\ttfamily,language=C,linerange={3102-3104, 3140-3143, 3173-3188, 3213-3217, 3265-3268}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+
+\begin{frame}
+  \lstinputlisting[style=customc,language=C,linerange={3324-3326, 3341-3349, 3359-3365, 3387-3387, 3391-3395, 3406-3417, 3428-3428, 3433-3435, 3436-3448, 3449-3453, 3471-3472}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+
+\begin{frame}{\subsecname}
+  \lstinputlisting[style=customc,language=C,linerange={3474-3476, 3480-3488, 3500-3502, 3677-3677, 3696-3697}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+
+\begin{frame}{\subsecname}{multipart/form-data格式}
+  \lstinputlisting[style=nginx]{application-form}  
+  \lstinputlisting[style=nginx]{multipart}  
+\end{frame}
+
+\begin{frame}{\subsecname}{状态机 boundary}
+  \lstinputlisting[style=customc,language=C,linerange={4043-4043, 4058-4086}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+\begin{frame}{\subsecname}{状态机 headers}
+  \lstinputlisting[style=customc,language=C,linerange={4087-4130}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+\begin{frame}{\subsecname}{状态机 data}
+  \lstinputlisting[style=customc,language=C,linerange={4135-4180}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
 
 \end{document}
 
