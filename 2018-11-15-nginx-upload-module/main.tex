@@ -154,6 +154,17 @@
 \end{frame}
 
 \subsection{运行}
+\begin{frame}{\subsecname}{实验配置}
+  \lstinputlisting[style=nginx,basicstyle=\fontsize{3.8}{3.8}\selectfont\ttfamily,linerange={13-53}]{nginx-run.conf}  
+\end{frame}
+\begin{frame}{\subsecname}{不经过upload模块}
+  \lstinputlisting[style=customc,language=C,linerange={1-7}]{php}
+  \lstinputlisting[style=nginx,linerange={11-40}]{php}  
+\end{frame}
+\begin{frame}{\subsecname}{经过upload模块}
+  \lstinputlisting[style=customc,language=C,linerange={1-7}]{php}
+  \lstinputlisting[style=nginx,linerange={43-63}]{php}  
+\end{frame}
 
 \subsection{代码结构}
 \begin{frame}{\subsecname}

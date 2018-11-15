@@ -1,0 +1,63 @@
+<?php
+
+print_r($_POST);
+
+echo "\n\n##############\n\n";
+
+print_r($_FILES);
+
+
+
+[d@bigo nginx-upload-module-test]$ curl -F title=upload -F file1=@1.jpg -F file2=@nginx.conf localhost:8080
+Array
+(
+    [title] => upload
+)
+
+
+##############
+
+Array
+(
+    [file1] => Array
+        (
+            [name] => 1.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phpDKur5q
+            [error] => 0
+            [size] => 114321
+        )
+
+    [file2] => Array
+        (
+            [name] => nginx.conf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phptbRtpx
+            [error] => 0
+            [size] => 156
+        )
+
+)
+
+
+[d@bigo nginx-upload-module-test]$ curl -F title=upload -F file1=@1.jpg -F file2=@nginx.conf localhost:8000
+Array
+(
+    [file1_name] => 1.jpg
+    [file1_content_type] => image/jpeg
+    [file1_path] => /tmp/6/0000000016
+    [file1_md5] => 
+    [file1_size] => 114321
+    [file2_name] => nginx.conf
+    [file2_content_type] => application/octet-stream
+    [file2_path] => /tmp/7/0000000017
+    [file2_md5] => 
+    [file2_size] => 156
+)
+
+
+##############
+
+Array
+(
+)
