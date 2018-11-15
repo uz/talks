@@ -189,5 +189,15 @@
   \lstinputlisting[style=customc,language=C,linerange={4135-4180}]{nginx-upload-module-master/ngx_http_upload_module.c}
 \end{frame}
 
+\begin{frame}{\subsecname}{交付给指定location处理}
+  \lstinputlisting[style=customc, basicstyle=\fontsize{5}{5}\selectfont\ttfamily,language=C,linerange={1164-1164, 1339-1351}]{nginx-upload-module-master/ngx_http_upload_module.c}
+
+  在最后一个buffer都已经被ngx\_http\_process\_request\_body处理完之后交付给upload\_pass指定的location来处理
+\end{frame}
+
+\begin{frame}{\subsecname}{交付之前的准备upload\_start\_file}
+  \lstinputlisting[style=customc, language=C,linerange={1374-1374, 1391-1391, 1394-1394, 1410-1410, 1455-1463, 1468-1468, 1485-1488, 1498-1498, 1508-1519, 1557-1557, 1560-1560, 1583-1585, 1591-1595, 1597-1603}]{nginx-upload-module-master/ngx_http_upload_module.c}
+\end{frame}
+
 \end{document}
 
