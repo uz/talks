@@ -23,9 +23,18 @@
   language=[x86masm]Assembler,
   basicstyle=\footnotesize\ttfamily,
   commentstyle=\itshape\color{purple!40!black},
+  keywordstyle=\bfseries\color{green!40!black},
 }
 
-\lstset{escapechar=@,style=customc}
+\lstdefinestyle{nginx}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  basicstyle=\fontsize{3.8}{3.8}\selectfont\ttfamily,
+}
+
+%\lstset{escapechar=@,style=customc}
 
 \AtBeginSubsection[]{
   \begin{frame}<beamer>
@@ -37,7 +46,7 @@
 \author{容忠健}
 \institute{@Bigo}
 \date{\today}
-\logo{\includegraphics[width=2cm]{nginx.png}}
+\logo{\includegraphics[width=2cm]{images/bigo.png}}
 
 \begin{document}
 
@@ -48,7 +57,7 @@
   \tableofcontents[hideallsubsections]
 \end{frame}
 
-%% 10 min
+%% nginx
 \section{nginx简介}
 
 \subsection{为什么nginx比apache性能更好？}
@@ -60,7 +69,6 @@
 \end{frame}
 
 \subsection{nginx框架是怎样的？}
-
 \begin{frame}{\subsecname}{nginx框架}
   \lstinputlisting[style=customc,language=C,linerange={727-778}]{nginx/src/os/unix/ngx_process_cycle.c}
 \end{frame}
@@ -89,17 +97,63 @@
 \end{frame}
 
 \subsection{nginx如何支持第三方模块？}
-\begin{frame}{\subsecname}{定义阶段和接口}
+\begin{frame}{\subsecname}{通过在感兴趣的phase注册自己的handler}
+  \lstinputlisting[style=customc,language=C,linerange={108-127}]{nginx/src/http/ngx_http_core_module.h}
+  \begin{itemize}
+  \item<2-> \lstinputlisting[style=customc,language=C,linerange={2921-2923, 2944-2944}]{nginx-upload-module-master/ngx_http_upload_module.c}
+  \item<3-> \lstinputlisting[style=customc,language=C,linerange={272-274, 280-285}]{nginx/src/http/modules/ngx_http_static_module.c}
+  \end{itemize}
 \end{frame}
 
 \subsection{编写nginx模块要注意什么？}
 \begin{frame}{\subsecname}
+  \begin{itemize}
+  \item<2-> 不能有阻塞调用，会把整个worker阻塞住
+  \end{itemize}
 \end{frame}
 
-%% 30 min
+%% nginx upload module
 \section{nginx upload module简介}
 \subsection{为什么我们需要这个模块？}
-\subsection{文件怎么落地？}
+\begin{frame}{\subsecname}
+  \begin{itemize}
+  \item<2-> 上传的文件落地
+    \begin{itemize}
+    \item<3-> 节约内存
+    \item<4-> 提升效率，文件落地之后就可以用sendfile系统调用，直接由内核发送数据给storage
+    \item<5-> 方便后端http server对文件的调整等处理
+    \end{itemize}
+  \item<6-> 断点续传
+    \begin{itemize}
+    \item<7-> 大文件上传由于耗时长，如果不能断点续传，受网络原因影响而导致上传失败的概率提升
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{\subsecname}
+  \begin{table}[h]                           
+    \centering
+    \begin{tabular}{ r|r|r|r|r }
+      \multicolumn{5}{c}{\textbf{落地 vs 内存 (qps)}} \\ \hline
+           & 并发数  &   php  & c++(nginx) & c++   \\            
+      100K &  1     &    14  & 22  & 152       \\     
+      100K &  50    &    509 & 138 & 108          \\     
+      100K &  100   &    523 & 250 & 70         \\     
+      4M &  1     &    7 & 9 & 9           \\     
+      4M &  50    &    26 & 17 & 12           \\     
+      4M &  100   &    26 & 23 & 10          \\     
+    \end{tabular}
+    \caption{文件落地性能}
+    \label{tab:msg1}                            
+  \end{table}
+\end{frame}
+
+\subsection{配置是怎样的？}
+\begin{frame}{\subsecname}
+  \lstinputlisting[style=nginx]{nginx-upload.conf}
+\end{frame}
+
+\subsection{代码结构}
 
 \end{document}
 
